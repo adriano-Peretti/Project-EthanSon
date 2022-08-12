@@ -26,7 +26,13 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.y * speed);
+        rb.velocity = new Vector3(movement.x * speed, rb.velocity.y, movement.y * speed);
+
+        if (isMoving)
+        {
+            Quaternion desiredRotation = Quaternion.LookRotation(new Vector3(movement.x, 0f, movement.y));
+            visual.rotation = Quaternion.RotateTowards(visual.rotation, desiredRotation, turnSpeed * Time.deltaTime);
+        }
     }
 
 
