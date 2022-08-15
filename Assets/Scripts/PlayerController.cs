@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] Transform visual;
+    [SerializeField] Animator animator;
     Rigidbody rb;
 
     [Header("Moviment")]
@@ -12,6 +13,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float turnSpeed = 720f;
     Vector2 movement = Vector2.zero;
     bool isMoving = false;
+
+    //Animations
+    readonly int anim_walk = Animator.StringToHash("isWalking");
+
 
     private void Awake()
     {
@@ -22,6 +27,7 @@ public class PlayerController : MonoBehaviour
     {
         movement = context.ReadValue<Vector2>();
         isMoving = movement.magnitude > 0f;
+        animator.SetBool(anim_walk, isMoving);
     }
 
     private void FixedUpdate()
