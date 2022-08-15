@@ -7,9 +7,8 @@ Versão do Unity: **2021.3.8f1**<br/>
 
 ## Fim da Aula 04
 
-- Criação de input system;<br/>
-- Setup da camera e cena;<br/>
-- Setup player e enemy;<br/>
+- Setup do Projeto;<br/>
+- Player Controller;<br/>
 - Animação, state machine e programação: idle, walk, attack, combo attack, charge attack.<br/>
 
 
