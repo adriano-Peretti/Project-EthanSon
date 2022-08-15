@@ -15,4 +15,13 @@ Versão do Unity: **2021.3.8f1**<br/>
 https://user-images.githubusercontent.com/80107070/184691586-bea6cf91-f911-4957-9d13-da8ac17803b4.mp4
 
 
+## Fim da Aula 05
+
+- Hitbox dos ataques. <br/>
+
+
+https://user-images.githubusercontent.com/80107070/184709545-97bb3875-dfb3-4d97-9ac8-b328b6194f53.mp4
+
+
+
 Repositório: https://github.com/adriano-Peretti/Project-EthanSon <br/>
