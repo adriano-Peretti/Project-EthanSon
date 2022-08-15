@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform visual;
     Rigidbody rb;
 
-    [Header("Moviment")]
+    [Header("Movement")]
     [SerializeField] float speed = 10f;
     [SerializeField] float turnSpeed = 720f;
     Vector2 movement = Vector2.zero;
@@ -34,16 +34,12 @@ public class PlayerController : MonoBehaviour
     bool isHolding = false;
     Coroutine chargingCoroutine = null;
 
-
     //Animations
     readonly int anim_isWalking = Animator.StringToHash("isWalking");
     readonly int anim_isCharging = Animator.StringToHash("isCharging");
     readonly int anim_attack = Animator.StringToHash("attack");
     readonly int anim_comboAttack = Animator.StringToHash("comboAttack");
     readonly int anim_chargeAttack = Animator.StringToHash("chargeAttack");
-
-
-
 
     private void Awake()
     {
@@ -68,6 +64,7 @@ public class PlayerController : MonoBehaviour
             {
                 StopCoroutine(chargingCoroutine);
             }
+
             chargingCoroutine = StartCoroutine(EChargingAnimation());
         }
 
@@ -89,6 +86,7 @@ public class PlayerController : MonoBehaviour
                 {
                     StopCoroutine(waitAttackCoroutine);
                 }
+
                 waitAttackCoroutine = StartCoroutine(EWaitAttackTime(0.2f));
             }
             else
@@ -99,6 +97,7 @@ public class PlayerController : MonoBehaviour
                     {
                         StopCoroutine(canComboCoroutine);
                     }
+
                     canCombo = false;
 
                     attackReady = Time.time + attackCooldown;
@@ -108,8 +107,8 @@ public class PlayerController : MonoBehaviour
                     {
                         StopCoroutine(waitAttackCoroutine);
                     }
-                    waitAttackCoroutine = StartCoroutine(EWaitAttackTime(0.2f));
 
+                    waitAttackCoroutine = StartCoroutine(EWaitAttackTime(0.2f));
                 }
                 else
                 {
@@ -122,12 +121,14 @@ public class PlayerController : MonoBehaviour
                         {
                             StopCoroutine(waitAttackCoroutine);
                         }
+
                         waitAttackCoroutine = StartCoroutine(EWaitAttackTime(0.2f));
 
                         if (canComboCoroutine != null)
                         {
                             StopCoroutine(canComboCoroutine);
                         }
+
                         canComboCoroutine = StartCoroutine(ECanComboWindow());
                     }
                 }
@@ -160,8 +161,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-
     private void FixedUpdate()
     {
         if (isAttacking)
@@ -178,7 +177,4 @@ public class PlayerController : MonoBehaviour
             visual.rotation = Quaternion.RotateTowards(visual.rotation, desiredRotation, turnSpeed * Time.deltaTime);
         }
     }
-
-
-
 }
