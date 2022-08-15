@@ -921,9 +921,9 @@ MonoBehaviour:
   visual: {fileID: 150704026}
   speed: 10
   turnSpeed: 720
-  attackCooldown: 0.3
+  attackCooldown: 0.4
   startComboTime: 0.15
-  endComboTime: 0.4
+  endComboTime: 0.5
   chargeHoldTime: 0.9
 --- !u!114 &1109325836
 MonoBehaviour:
