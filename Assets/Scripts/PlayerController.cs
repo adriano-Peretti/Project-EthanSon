@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] Player player;
     [SerializeField] Animator animator;
     [SerializeField] Transform visual;
     Rigidbody rb;
@@ -34,12 +35,20 @@ public class PlayerController : MonoBehaviour
     bool isHolding = false;
     Coroutine chargingCoroutine = null;
 
+    [Header("Ranged Attack")]
+    [SerializeField] Transform firePoint;
+    [SerializeField] GameObject firePrefab;
+    [SerializeField] LayerMask mouseLayer;
+    [SerializeField] float rangedAttackCooldown = 0.5f;
+
+
     //Animations
     readonly int anim_isWalking = Animator.StringToHash("isWalking");
     readonly int anim_isCharging = Animator.StringToHash("isCharging");
     readonly int anim_attack = Animator.StringToHash("attack");
     readonly int anim_comboAttack = Animator.StringToHash("comboAttack");
     readonly int anim_chargeAttack = Animator.StringToHash("chargeAttack");
+    readonly int anim_rangedAttack = Animator.StringToHash("rangedAttack");
 
     private void Awake()
     {
@@ -51,6 +60,37 @@ public class PlayerController : MonoBehaviour
         movement = context.ReadValue<Vector2>();
         isMoving = movement.magnitude > 0f;
         animator.SetBool(anim_isWalking, isMoving);
+    }
+
+    public void OnRangedAttack(InputAction.CallbackContext context)
+    {
+        if (Time.time > attackReady && player.currentRangedCharges > 0)
+        {
+            player.currentRangedCharges--;
+
+            attackReady = Time.time + rangedAttackCooldown;
+
+            if (waitAttackCoroutine != null)
+            {
+                StopCoroutine(waitAttackCoroutine);
+            }
+
+            waitAttackCoroutine = StartCoroutine(EWaitAttackTime(0.2f));
+
+            //Logica do Projectil
+            Ray mouseRay = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            if (Physics.Raycast(mouseRay, out RaycastHit hit, 500f, mouseLayer))
+            {
+                Vector3 mouseDirection = hit.point - transform.position;
+                mouseDirection.y = 0f;
+
+                visual.rotation = Quaternion.LookRotation(mouseDirection, Vector3.up);
+                animator.SetTrigger(anim_rangedAttack);
+
+                Instantiate(firePoint, firePoint.position, firePoint.rotation);
+            }
+
+        }
     }
 
     public void OnAttack(InputAction.CallbackContext context)
