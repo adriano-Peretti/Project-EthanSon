@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviour
     Vector2 movement = Vector2.zero;
     bool isMoving = false;
 
+    [Header("Dash")]
+    [SerializeField] float dashForce = 5f;
+    [SerializeField] float dashCooldown;
+
     [Header("Attack")]
     //Normal Attack
     [SerializeField] float attackCooldown = 0.3f;
@@ -62,6 +66,11 @@ public class PlayerController : MonoBehaviour
         animator.SetBool(anim_isWalking, isMoving);
     }
 
+    public void OnDash(InputAction.CallbackContext context)
+    {
+
+    }
+
     public void OnRangedAttack(InputAction.CallbackContext context)
     {
         if (Time.time > attackReady && player.currentRangedCharges > 0)
@@ -87,7 +96,8 @@ public class PlayerController : MonoBehaviour
                 visual.rotation = Quaternion.LookRotation(mouseDirection, Vector3.up);
                 animator.SetTrigger(anim_rangedAttack);
 
-                Instantiate(firePoint, firePoint.position, firePoint.rotation);
+                PlayerProjectile projectile = Instantiate(firePrefab, firePoint.position, firePoint.rotation).GetComponent<PlayerProjectile>();
+                projectile.playerAttack = player.attack;
             }
 
         }

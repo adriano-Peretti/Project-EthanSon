@@ -1201,13 +1201,13 @@ MonoBehaviour:
     m_ActionName: Player/RangedAttack[/Keyboard/x,/Mouse/rightButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1109325835}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnDash
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1638,6 +1638,10 @@ PrefabInstance:
     - target: {fileID: 4924035268385203592, guid: 8f928825e8a4954458eb694502c20097, type: 3}
       propertyPath: m_Name
       value: PlayerProjectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 4924035268385203592, guid: 8f928825e8a4954458eb694502c20097, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8990367883049172283, guid: 8f928825e8a4954458eb694502c20097, type: 3}
       propertyPath: m_RootOrder

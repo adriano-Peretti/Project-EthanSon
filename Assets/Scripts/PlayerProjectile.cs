@@ -1,18 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerProjectile : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("Projectile")]
+    [SerializeField] float speed = 20f;
+    [SerializeField] float lifeTime = 5f;
+
+    [Header("Damage")]
+    public float playerAttack;
+    [SerializeField][Range(0.5f, 3f)] float damageMultiplier = 1f;
+
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.CompareTag("Enemy"))
+        {
+            Debug.Log("Atingiu um Inimigo");
+        }
+
+        Destroy(this.gameObject, .1f);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void Start()
     {
-        
+        Destroy(this.gameObject, lifeTime);
+    }
+
+
+    private void Update()
+    {
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 }
