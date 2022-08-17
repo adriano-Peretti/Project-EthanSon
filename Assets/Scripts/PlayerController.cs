@@ -13,12 +13,13 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] float speed = 10f;
     [SerializeField] float turnSpeed = 720f;
-    Vector2 movement = Vector2.zero;
+    Vector3 movement = Vector3.zero;
     bool isMoving = false;
 
     [Header("Dash")]
     [SerializeField] float dashForce = 5f;
     [SerializeField] float dashCooldown;
+    float dashReady = 0f;
 
     [Header("Attack")]
     //Normal Attack
@@ -61,14 +62,30 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        movement = context.ReadValue<Vector2>();
+        movement = Vector3.right * context.ReadValue<Vector2>().x + Vector3.forward * context.ReadValue<Vector2>().y;
         isMoving = movement.magnitude > 0f;
         animator.SetBool(anim_isWalking, isMoving);
     }
 
     public void OnDash(InputAction.CallbackContext context)
     {
+        if (Time.time > dashReady)
+        {
+            dashReady = Time.time + dashCooldown;
 
+            if (isMoving)
+            {
+                rb.AddForce(movement * dashForce * 1000f, ForceMode.Impulse);
+
+                Quaternion rotateDirection = Quaternion.LookRotation(movement);
+                visual.rotation = rotateDirection;
+            }
+            else
+            {
+                rb.AddForce(visual.forward * dashForce * 1000f, ForceMode.Impulse);
+            }
+
+        }
     }
 
     public void OnRangedAttack(InputAction.CallbackContext context)
@@ -90,7 +107,7 @@ public class PlayerController : MonoBehaviour
             Ray mouseRay = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (Physics.Raycast(mouseRay, out RaycastHit hit, 500f, mouseLayer))
             {
-                Vector3 mouseDirection = hit.point - transform.position;
+                Vector3 mouseDirection = hit.point - visual.position;
                 mouseDirection.y = 0f;
 
                 visual.rotation = Quaternion.LookRotation(mouseDirection, Vector3.up);
@@ -213,17 +230,28 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        rb.velocity = Vector3.zero;
+
         if (isAttacking)
         {
             rb.velocity = new Vector3(0f, rb.velocity.y, 0f);
             return;
         }
 
-        rb.velocity = new Vector3(movement.x * speed, rb.velocity.y, movement.y * speed);
 
+        if (!isAttacking)
+        {
+            rb.velocity = movement * speed;
+
+            if (isMoving)
+            {
+                Quaternion desiredRotation = Quaternion.LookRotation(movement);
+                visual.rotation = Quaternion.RotateTowards(visual.rotation, desiredRotation, turnSpeed * Time.deltaTime);
+            }
+        }
         if (isMoving)
         {
-            Quaternion desiredRotation = Quaternion.LookRotation(new Vector3(movement.x, 0f, movement.y));
+            Quaternion desiredRotation = Quaternion.LookRotation(movement);
             visual.rotation = Quaternion.RotateTowards(visual.rotation, desiredRotation, turnSpeed * Time.deltaTime);
         }
     }
